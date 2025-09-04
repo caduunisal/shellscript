@@ -23,4 +23,4 @@ jobs:
           # Força push da branch main
           git push azure main --force
         env:
-          AZURE_PAT: ${{ secrets.AZURE_PAT }}
+          AZURE_PAT: ${{ secrets.shellscript_repo }}
