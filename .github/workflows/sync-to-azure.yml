@@ -18,9 +18,9 @@ jobs:
           git config --global user.name "caduunisal"
 
           # Adiciona remote do Azure DevOps
-          git remote add azure https://$(AZURE_PAT)@dev.azure.com/carlosramosti/_git/shellscript
+          git remote add azure https://$(SHELLSCRIPT_REPO)@dev.azure.com/carlosramosti/_git/shellscript
 
           # Força push da branch main
           git push azure main --force
         env:
-          AZURE_PAT: ${{ secrets.SHELLSCRIPT_REPO }}
+          SHELLSCRIPT_REPO: ${{ secrets.SHELLSCRIPT_REPO }}
