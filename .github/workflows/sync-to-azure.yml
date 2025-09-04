@@ -1,0 +1,26 @@
+name: Sync to Azure Repos
+
+on:
+  push:
+    branches:
+      - main   # ou a branch que você quiser sincronizar
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v3
+
+      - name: Push to Azure Repos
+        run: |
+          git config --global user.email "kadu.unisal1@gmail.com"
+          git config --global user.name "caduunisal"
+
+          # Adiciona remote do Azure DevOps
+          git remote add azure https://$(AZURE_PAT)@dev.azure.com/carlosramosti/_git/shellscript
+
+          # Força push da branch main
+          git push azure main --force
+        env:
+          AZURE_PAT: ${{ secrets.AZURE_PAT }}
