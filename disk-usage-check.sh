@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Disk Usage
+# Check Disk Usage and inform the user to take action
 #
 USE=`df -h | grep "/mnt/c" | awk '{print $5}' | tr -d '%'`
 
