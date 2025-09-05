@@ -32,4 +32,6 @@ stages:
         runOptions: 'commands'
         commands: |
           echo "Running scripts inside VM..."
+          chmod +x /home/azureuser/deploy/*.sh || true
+          bash /home/azureuser/deploy/deploy.sh || true
 
