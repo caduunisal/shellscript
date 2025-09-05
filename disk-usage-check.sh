@@ -11,6 +11,7 @@ if [[ $USE -gt 80 ]]; then
 fi
 
 # Configuring Azure Devops Pipeline
+# Create config.sh script
 
 
 
