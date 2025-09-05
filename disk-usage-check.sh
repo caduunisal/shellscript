@@ -12,6 +12,7 @@ fi
 
 # Configuring Azure Devops Pipeline
 # Create config.sh script
+# Remove remote files
 
 
 
