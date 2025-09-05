@@ -21,14 +21,14 @@ stages:
     steps:
     - task: CopyFilesOverSSH@0
       inputs:
-        sshEndpoint: 'MySSHConnection'  # nome do service connection criado
+        sshEndpoint: 'cadu-azure-vm'
         sourceFolder: '$(Build.SourcesDirectory)'
         contents: '**'
         targetFolder: '/home/azureuser/deploy'
     
     - task: SSH@0
       inputs:
-        sshEndpoint: 'MySSHConnection'
+        sshEndpoint: 'cadu-azure-vm'
         runOptions: 'commands'
         commands: |
           echo "Running scripts inside VM..."
