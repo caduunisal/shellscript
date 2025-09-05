@@ -1,0 +1,36 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Prepare
+    steps:
+    - checkout: self
+    - script: |
+        echo "Listing repo files..."
+        ls -ltr
+      displayName: "Check files"
+
+- stage: Deploy
+  jobs:
+  - job: DeployToVM
+    steps:
+    - task: CopyFilesOverSSH@0
+      inputs:
+        sshEndpoint: 'MySSHConnection'  # nome do service connection criado
+        sourceFolder: '$(Build.SourcesDirectory)'
+        contents: '**'
+        targetFolder: '/home/azureuser/deploy'
+    
+    - task: SSH@0
+      inputs:
+        sshEndpoint: 'MySSHConnection'
+        runOptions: 'commands'
+        commands: |
+          echo "Running scripts inside VM..."
+          chmod +x /home/azureuser/deploy/*.sh || true
+          bash /home/azureuser/deploy/deploy.sh || true
