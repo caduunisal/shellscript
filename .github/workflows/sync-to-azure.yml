@@ -19,14 +19,20 @@ jobs:
           git config --global user.email "kadu.unisal1@gmail.com"
           git config --global user.name "caduunisal"
 
-          # Se já existir, remove e adiciona novamente
           git remote remove azure || true
           git remote add azure https://caduunisal:${AZURE_PAT}@dev.azure.com/carlosramosti/shellscript/_git/shellscript
-
-          # Push da branch main
           git push azure main --force
         env:
           AZURE_PAT: ${{ secrets.AZURE_PAT }}
+
+      - name: Ensure scripts directory exists
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          script: |
+            mkdir -p /home/${{ secrets.AZURE_VM_USER }}/scripts
 
       - name: Copy repo scripts to VM
         uses: appleboy/scp-action@v0.1.7
@@ -34,14 +40,9 @@ jobs:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_SSH_KEY }}
-          script: |
-            if [ ! -d /home/${{ secrets.AZURE_VM_USER }}/script/ ]; then
-              mkdir /home/${{ secrets.AZURE_VM_USER }}/script/
-            fi
           source: "*.{sh,py,sql}"
-          #target: "/home/${{ secrets.AZURE_VM_USER }}/scripts/"
-          target: "/home/${{ secrets.AZURE_VM_USER }}/"
-          overwrite: true   # 👈 garante que sobrescreve versões antigas
+          target: "/home/${{ secrets.AZURE_VM_USER }}/scripts/"
+          overwrite: true
 
       - name: Copy crontab file to VM
         uses: appleboy/scp-action@v0.1.7
