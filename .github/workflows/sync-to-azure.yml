@@ -27,3 +27,23 @@ jobs:
           git push azure main --force
         env:
           AZURE_PAT: ${{ secrets.AZURE_PAT }}
+
+      - name: Copy crontab file to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          source: "crontab.prod"
+          target: "/home/${{ secrets.AZURE_VM_USER }}/crontab.prod"
+
+      - name: Install crontab on VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          script: |
+            crontab /home/${{ secrets.AZURE_VM_USER }}/crontab.prod
+            echo "[INFO] Crontab instalado com sucesso!"
+            crontab -l
