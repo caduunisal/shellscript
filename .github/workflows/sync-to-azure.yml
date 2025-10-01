@@ -47,6 +47,7 @@ jobs:
             if [ -f /home/${{ secrets.AZURE_VM_USER }}/crontab.prod ]; then
               crontab /home/${{ secrets.AZURE_VM_USER }}/crontab.prod
               echo "[INFO] Crontab instalado com sucesso!"
+              crontab crontab.prod
               crontab -l
             else
               echo "[ERROR] Arquivo crontab.prod não encontrado."
