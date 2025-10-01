@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_SSH_KEY }}
           source: "crontab.prod"
-          target: "/home/${{ secrets.AZURE_VM_USER }}/crontab.prod"
+          target: "/home/${{ secrets.AZURE_VM_USER }}/"
 
       - name: Install crontab on VM
         uses: appleboy/ssh-action@v1.0.3
@@ -44,6 +44,11 @@ jobs:
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_SSH_KEY }}
           script: |
-            crontab /home/${{ secrets.AZURE_VM_USER }}/crontab.prod
-            echo "[INFO] Crontab instalado com sucesso!"
-            crontab -l
+            if [ -f /home/${{ secrets.AZURE_VM_USER }}/crontab.prod ]; then
+              crontab /home/${{ secrets.AZURE_VM_USER }}/crontab.prod
+              echo "[INFO] Crontab instalado com sucesso!"
+              crontab -l
+            else
+              echo "[ERROR] Arquivo crontab.prod não encontrado."
+              exit 1
+            fi
