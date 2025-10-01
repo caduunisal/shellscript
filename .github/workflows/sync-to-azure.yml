@@ -40,9 +40,10 @@ jobs:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_SSH_KEY }}
-          source: "*.{sh,py,sql}"
+          source: "./*.sh,./*.py,./*.sql"
           target: "/home/${{ secrets.AZURE_VM_USER }}/scripts/"
           overwrite: true
+
 
       - name: Copy crontab file to VM
         uses: appleboy/scp-action@v0.1.7
