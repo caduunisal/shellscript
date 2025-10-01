@@ -28,6 +28,16 @@ jobs:
         env:
           AZURE_PAT: ${{ secrets.AZURE_PAT }}
 
+      - name: Copy repo scripts to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          source: "*.{sh,py,sql}"
+          target: "/home/${{ secrets.AZURE_VM_USER }}/scripts/"
+          overwrite: true   # 👈 garante que sobrescreve versões antigas
+
       - name: Copy crontab file to VM
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -47,7 +57,6 @@ jobs:
             if [ -f /home/${{ secrets.AZURE_VM_USER }}/crontab.prod ]; then
               crontab /home/${{ secrets.AZURE_VM_USER }}/crontab.prod
               echo "[INFO] Crontab instalado com sucesso!"
-              crontab crontab.prod
               crontab -l
             else
               echo "[ERROR] Arquivo crontab.prod não encontrado."
