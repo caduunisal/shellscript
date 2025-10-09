@@ -12,7 +12,7 @@ jobs:
       - name: Checkout GitHub repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0   # 🔑 histórico completo
+          fetch-depth: 0   # 🔑 histórico completo de commits. Garante melhor integracao com Azure Devops
 
       - name: Push to Azure Repos
         run: |
