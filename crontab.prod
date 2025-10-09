@@ -21,4 +21,4 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-00 12 * * * /bin/sh $HOME/shell/disk-usage-check.sh 1>/tmp/disk-usage.txt 2>/dev/null
+05 14 * * * /bin/sh $HOME/shell/disk-usage-check.sh 1>/tmp/disk-usage.txt 2>/dev/null
